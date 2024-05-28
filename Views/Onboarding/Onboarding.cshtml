@@ -1,0 +1,87 @@
+﻿@model AlphaWorkout.Models.Onboarding
+
+@{
+    ViewData["Title"] = "Complete Onboarding";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-action="SaveOnboarding" method="post">
+    <div class="form-group">
+        <label asp-for="FitnessGoals"></label>
+        <select asp-for="FitnessGoals" class="form-control">
+            <option value="Build Muscle">Build Muscle</option>
+            <option value="Lose Weight">Lose Weight</option>
+            <option value="Improve Endurance">Improve Endurance</option>
+            <option value="Increase Flexibility">Increase Flexibility</option>
+            <option value="Maintain Health">Maintain Health</option>
+            <option value="Improve Athletic Performance">Improve Athletic Performance</option>
+        </select>
+        <span asp-validation-for="FitnessGoals" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Demographics"></label>
+        <select asp-for="Demographics" class="form-control">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Non-binary">Non-binary</option>
+            <option value="Prefer not to say">Prefer not to say</option>
+        </select>
+        <span asp-validation-for="Demographics" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Demographics">Age Group</label>
+        <select asp-for="Demographics" class="form-control">
+            <option value="Under 18">Under 18</option>
+            <option value="18-24">18-24</option>
+            <option value="25-34">25-34</option>
+            <option value="35-44">35-44</option>
+            <option value="45-54">45-54</option>
+            <option value="55-64">55-64</option>
+            <option value="65+">65+</option>
+        </select>
+        <span asp-validation-for="Demographics" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FitnessLevel"></label>
+        <select asp-for="FitnessLevel" class="form-control">
+            <option value="Beginner">Beginner</option>
+            <option value="Intermediate">Intermediate</option>
+            <option value="Advanced">Advanced</option>
+        </select>
+        <span asp-validation-for="FitnessLevel" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ExercisePreferences"></label>
+        <select asp-for="ExercisePreferences" class="form-control">
+            <option value="Cardio">Cardio</option>
+            <option value="Strength Training">Strength Training</option>
+            <option value="Flexibility">Flexibility</option>
+            <option value="Yoga">Yoga</option>
+            <option value="High-Intensity Interval Training (HIIT)">High-Intensity Interval Training (HIIT)</option>
+            <option value="Bodyweight Exercises">Bodyweight Exercises</option>
+            <option value="Free Weights">Free Weights</option>
+            <option value="Machines">Machines</option>
+        </select>
+        <span asp-validation-for="ExercisePreferences" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PastInjury"></label>
+        <select asp-for="PastInjury" class="form-control">
+            <option value="None">None</option>
+            <option value="Shoulder Injury">Shoulder Injury</option>
+            <option value="Knee Injury">Knee Injury</option>
+            <option value="Back Injury">Back Injury</option>
+            <option value="Ankle Injury">Ankle Injury</option>
+            <option value="Wrist Injury">Wrist Injury</option>
+            <option value="Other">Other (please specify)</option>
+        </select>
+        <span asp-validation-for="PastInjury" class="text-danger"></span>
+        <input type="text" asp-for="PastInjury" class="form-control" placeholder="Specify other injury" />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

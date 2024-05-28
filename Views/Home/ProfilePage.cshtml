@@ -1,0 +1,51 @@
+﻿@model AlphaWorkout.Models.ProfilePageViewModel
+
+@{
+    ViewData["Title"] = "Profile Page";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>Welcome to your Profile Page, @Model.Username!</p>
+
+<!-- Add the Onboarding button -->
+<a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
+
+<!-- Display the onboarding data in a table -->
+@if (Model.FitnessGoals != null)
+{
+    <h2>Your Onboarding Information</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Information</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Fitness Goals</td>
+                <td>@Model.FitnessGoals</td>
+            </tr>
+            <tr>
+                <td>Demographics</td>
+                <td>@Model.Demographics</td>
+            </tr>
+            <tr>
+                <td>Fitness Level</td>
+                <td>@Model.FitnessLevel</td>
+            </tr>
+            <tr>
+                <td>Exercise Preferences</td>
+                <td>@Model.ExercisePreferences</td>
+            </tr>
+            <tr>
+                <td>Past Injury</td>
+                <td>@Model.PastInjury</td>
+            </tr>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>You have not completed the onboarding form yet. Please <a asp-controller="Onboarding" asp-action="Index">complete the onboarding form</a>.</p>
+}

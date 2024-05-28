@@ -1,0 +1,31 @@
+﻿@model IEnumerable<AlphaWorkout.Models.Exercise>
+
+@{
+    ViewData["Title"] = "Exercises";
+}
+
+<h1>Exercises</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Muscle</th>
+            <th>Difficulty</th>
+            <th>Instructions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                <td>@Html.DisplayFor(modelItem => item.Muscle)</td>
+                <td>@Html.DisplayFor(modelItem => item.Difficulty)</td>
+                <td>@Html.DisplayFor(modelItem => item.Instructions)</td>
+            </tr>
+        }
+    </tbody>
+</table>
