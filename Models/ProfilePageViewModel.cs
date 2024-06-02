@@ -15,5 +15,8 @@ namespace AlphaWorkout.Models
         public double? CurrentWeight { get; set; }
         public List<WeightEntry> WeightEntries { get; set; }
         public string WeightChange { get; set; }
+
+        // property for workout plan
+        public Dictionary<string, string> WorkoutPlan { get; set; }
     }
 }

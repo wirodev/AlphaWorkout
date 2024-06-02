@@ -82,3 +82,32 @@
         <p><strong>Weight Change Since Last Entry:</strong> @Model.WeightChange</p>
     }
 }
+
+<!-- Button to generate workout plan -->
+<h2>Generate Workout Plan</h2>
+<form asp-action="GenerateWorkoutPlan" method="post">
+    <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
+</form>
+
+<!-- Display the workout plan -->
+@if (Model.WorkoutPlan != null)
+{
+    <h3>Your Workout Plan</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Exercise</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.WorkoutPlan)
+            {
+                <tr>
+                    <td>@entry.Key</td>
+                    <td>@entry.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
