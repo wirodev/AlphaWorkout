@@ -1,4 +1,8 @@
-﻿@model AlphaWorkout.Models.Onboarding
+﻿@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc.TagHelpers;
+@model AlphaWorkout.Models.Onboarding;
+@inject UserManager<ApplicationUser> UserManager;
+
 
 @{
     ViewData["Title"] = "Complete Onboarding";
@@ -7,6 +11,12 @@
 <h1>@ViewData["Title"]</h1>
 
 <form asp-action="SaveOnboarding" method="post">
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        var userId = UserManager.GetUserId(User);
+        <input type="hidden" id="UserId" name="UserId" value="@userId" />
+    }
     <div class="form-group">
         <label asp-for="FitnessGoals"></label>
         <select asp-for="FitnessGoals" class="form-control">

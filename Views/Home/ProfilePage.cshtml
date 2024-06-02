@@ -45,7 +45,40 @@
         </tbody>
     </table>
 }
-else
+
+<!-- Add weight entry form -->
+<h2>Track Your Weight</h2>
+<form asp-action="AddWeight" method="post">
+    <div class="form-group">
+        <label for="weight">Weight (kg):</label>
+        <input type="number" step="0.01" class="form-control" id="weight" name="weight" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Add Weight</button>
+</form>
+
+<!-- Display weight entries -->
+@if (Model.WeightEntries != null && Model.WeightEntries.Any())
 {
-    <p>You have not completed the onboarding form yet. Please <a asp-controller="Onboarding" asp-action="Index">complete the onboarding form</a>.</p>
+    <h3>Your Weight Entries</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Weight (kg)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.WeightEntries)
+            {
+                <tr>
+                    <td>@entry.Date.ToString("g")</td>
+                    <td>@entry.Weight</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (Model.WeightChange != null)
+    {
+        <p><strong>Weight Change Since Last Entry:</strong> @Model.WeightChange</p>
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace AlphaWorkout.Models
+﻿using System.Collections.Generic;
+
+namespace AlphaWorkout.Models
 {
     public class ProfilePageViewModel
     {
@@ -8,5 +10,10 @@
         public string FitnessLevel { get; set; }
         public string ExercisePreferences { get; set; }
         public string PastInjury { get; set; }
+
+        // properties for weight tracking
+        public double? CurrentWeight { get; set; }
+        public List<WeightEntry> WeightEntries { get; set; }
+        public string WeightChange { get; set; }
     }
 }
