@@ -18,5 +18,8 @@ namespace AlphaWorkout.Models
 
         // property for workout plan
         public Dictionary<string, string> WorkoutPlan { get; set; }
+
+        // property for profile picture
+        public string ProfilePicturePath { get; set; }
     }
 }

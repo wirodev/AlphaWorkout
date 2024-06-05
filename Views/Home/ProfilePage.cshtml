@@ -7,6 +7,22 @@
 <h1>@ViewData["Title"]</h1>
 <p>Welcome to your Profile Page, @Model.Username!</p>
 
+<!-- Display profile picture if it exists -->
+@if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+{
+    <img src="@Model.ProfilePicturePath" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;" />
+}
+
+<!-- Form to upload profile picture -->
+<h2>Upload Profile Picture</h2>
+<form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="ProfilePicture">Profile Picture:</label>
+        <input type="file" class="form-control" id="ProfilePicture" name="ProfilePicture" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
 <!-- Add the Onboarding button -->
 <a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
 

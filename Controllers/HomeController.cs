@@ -7,6 +7,8 @@ using System.Linq;
 using AlphaWorkout.Data;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace AlphaWorkout.Controllers
 {
@@ -15,12 +17,14 @@ namespace AlphaWorkout.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, UserManager<ApplicationUser> userManager, ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
             _logger = logger;
             _userManager = userManager;
             _context = context;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index()
@@ -74,7 +78,8 @@ namespace AlphaWorkout.Controllers
                 CurrentWeight = weightEntries.FirstOrDefault()?.Weight,
                 WeightEntries = weightEntries,
                 WeightChange = weightChange,
-                WorkoutPlan = GenerateWorkoutPlan(onboarding, weightEntries) // New method call
+                WorkoutPlan = GenerateWorkoutPlan(onboarding, weightEntries), 
+                ProfilePicturePath = user.ProfilePicturePath 
             };
 
             return View(model);
@@ -134,7 +139,7 @@ namespace AlphaWorkout.Controllers
 
         private Dictionary<string, string> GenerateWorkoutPlan(Onboarding onboarding, List<WeightEntry> weightEntries)
         {
-            // Sample logic for generating a workout plan
+            // sample logic for generating a workout plan
             var workoutPlan = new Dictionary<string, string>();
 
             if (onboarding == null)
@@ -142,7 +147,7 @@ namespace AlphaWorkout.Controllers
                 return workoutPlan;
             }
 
-            // Sample logic: 3-day split workout plan
+            // sample logic: 3-day split workout plan
             var exercises = _context.Exercises.ToList();
             var selectedExercises = exercises.Where(e =>
                 (onboarding.FitnessGoals == "Build Muscle" && e.Type == "strength") ||
@@ -156,6 +161,42 @@ namespace AlphaWorkout.Controllers
             workoutPlan["Day 3"] = string.Join(", ", selectedExercises.Skip(6).Take(3).Select(e => e.Name));
 
             return workoutPlan;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadProfilePicture(ProfilePictureViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                string uniqueFileName = null;
+
+                if (model.ProfilePicture != null)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "profilepictures");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfilePicture.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await model.ProfilePicture.CopyToAsync(fileStream);
+                    }
+                }
+
+                user.ProfilePicturePath = "/profilepictures/" + uniqueFileName;
+                var result = await _userManager.UpdateAsync(user);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("ProfilePage");
+                }
+            }
+            return RedirectToAction("ProfilePage");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

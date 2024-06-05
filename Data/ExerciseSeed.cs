@@ -12,10 +12,9 @@ namespace AlphaWorkout.Data
         {
             using (var context = new ApplicationDbContext(serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>()))
             {
-                // Look for any exercises already in the database.
                 if (context.Exercises.Any())
                 {
-                    return;   // Database has been seeded
+                    return;   
                 }
 
                 context.Exercises.AddRange(
