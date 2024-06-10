@@ -12,7 +12,9 @@
 {
     <img src="@Model.ProfilePicturePath" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;" />
 }
-
+<br />
+<br />
+<br />
 <!-- Form to upload profile picture -->
 <h2>Upload Profile Picture</h2>
 <form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
@@ -22,10 +24,14 @@
     </div>
     <button type="submit" class="btn btn-primary">Upload</button>
 </form>
-
+<br />
+<br />
+<br />
 <!-- Add the Onboarding button -->
 <a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
-
+<br />
+<br />
+<br />
 <!-- Display the onboarding data in a table -->
 @if (Model.FitnessGoals != null)
 {
@@ -61,7 +67,9 @@
         </tbody>
     </table>
 }
-
+<br />
+<br />
+<br />
 <!-- Add weight entry form -->
 <h2>Track Your Weight</h2>
 <form asp-action="AddWeight" method="post">
@@ -71,7 +79,9 @@
     </div>
     <button type="submit" class="btn btn-primary">Add Weight</button>
 </form>
-
+<br />
+<br />
+<br />
 <!-- Display weight entries -->
 @if (Model.WeightEntries != null && Model.WeightEntries.Any())
 {
@@ -98,13 +108,17 @@
         <p><strong>Weight Change Since Last Entry:</strong> @Model.WeightChange</p>
     }
 }
-
+<br />
+<br />
+<br />
 <!-- Button to generate workout plan -->
 <h2>Generate Workout Plan</h2>
 <form asp-action="GenerateWorkoutPlan" method="post">
     <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
 </form>
-
+<br />
+<br />
+<br />
 <!-- Display the workout plan -->
 @if (Model.WorkoutPlan != null)
 {

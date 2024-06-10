@@ -5,8 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("Alphaworkoutconnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// determine which connection string to use
+string connectionString;
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("LocalConnection") ?? throw new InvalidOperationException("Connection string 'LocalConnection' not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("Alphaworkoutconnection") ?? throw new InvalidOperationException("Connection string 'Alphaworkoutconnection' not found.");
+}
+
+// add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -35,6 +45,7 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage(); // errors in development
     app.UseMigrationsEndPoint();
 }
 else
