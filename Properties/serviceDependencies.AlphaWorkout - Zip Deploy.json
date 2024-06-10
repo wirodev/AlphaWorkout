@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql2": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/AlphaWorkout/providers/Microsoft.ServiceLinker/linkers/Alphaworkoutconnection_490BF83434",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/alphaworkoutdbserver/databases/AlphaWorkout",
+      "type": "mssql.azure",
+      "connectionId": "Alphaworkoutconnection"
+    }
+  }
+}
