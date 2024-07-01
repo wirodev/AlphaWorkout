@@ -46,25 +46,14 @@ namespace AlphaWorkout.Controllers
             }
 
             var onboarding = _context.Onboardings.FirstOrDefault(o => o.UserId == user.Id);
-            var weightEntries = _context.WeightEntries.Where(w => w.UserId == user.Id).OrderByDescending(w => w.Date).ToList();
+            var weightEntries = _context.WeightEntries.Where(w => w.UserId == user.Id).OrderBy(w => w.Date).ToList();
 
             string weightChange = null;
             if (weightEntries.Count > 1)
             {
-                var latestWeight = weightEntries.First().Weight;
-                var previousWeight = weightEntries.Skip(1).First().Weight;
-                if (latestWeight > previousWeight)
-                {
-                    weightChange = "Increase";
-                }
-                else if (latestWeight < previousWeight)
-                {
-                    weightChange = "Decrease";
-                }
-                else
-                {
-                    weightChange = "No Change";
-                }
+                var latestWeight = weightEntries.Last().Weight;
+                var previousWeight = weightEntries[^2].Weight;
+                weightChange = latestWeight > previousWeight ? "Increase" : latestWeight < previousWeight ? "Decrease" : "No Change";
             }
 
             var model = new ProfilePageViewModel
@@ -75,11 +64,11 @@ namespace AlphaWorkout.Controllers
                 FitnessLevel = onboarding?.FitnessLevel,
                 ExercisePreferences = onboarding?.ExercisePreferences,
                 PastInjury = onboarding?.PastInjury,
-                CurrentWeight = weightEntries.FirstOrDefault()?.Weight,
+                CurrentWeight = weightEntries.LastOrDefault()?.Weight,
                 WeightEntries = weightEntries,
                 WeightChange = weightChange,
-                WorkoutPlan = GenerateWorkoutPlan(onboarding, weightEntries), 
-                ProfilePicturePath = user.ProfilePicturePath 
+                WorkoutPlan = GenerateWorkoutPlan(onboarding, weightEntries),
+                ProfilePicturePath = user.ProfilePicturePath
             };
 
             return View(model);

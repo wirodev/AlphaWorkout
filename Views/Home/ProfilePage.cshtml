@@ -86,27 +86,41 @@
 @if (Model.WeightEntries != null && Model.WeightEntries.Any())
 {
     <h3>Your Weight Entries</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Weight (kg)</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var entry in Model.WeightEntries)
-            {
-                <tr>
-                    <td>@entry.Date.ToString("g")</td>
-                    <td>@entry.Weight</td>
-                </tr>
+    <canvas id="weightChart" width="400" height="200"></canvas>
+    <!-- Ensure Chart.js is loaded -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        var ctx = document.getElementById('weightChart').getContext('2d');
+
+        // Debugging: Log data to the console
+        var weightDates = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Date.ToString("MM/dd/yyyy")).ToList()));
+        var weightValues = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Weight).ToList()));
+
+        console.log("Weight Dates:", weightDates);
+        console.log("Weight Values:", weightValues);
+
+        var weightData = {
+            labels: weightDates,
+            datasets: [{
+                label: 'Weight (kg)',
+                data: weightValues,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        };
+        var weightChart = new Chart(ctx, {
+            type: 'line',
+            data: weightData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
             }
-        </tbody>
-    </table>
-    @if (Model.WeightChange != null)
-    {
-        <p><strong>Weight Change Since Last Entry:</strong> @Model.WeightChange</p>
-    }
+        });
+    </script>
 }
 <br />
 <br />
