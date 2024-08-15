@@ -108,7 +108,7 @@ namespace AlphaWorkout.Controllers
             }
 
             var onboarding = _context.Onboardings.FirstOrDefault(o => o.UserId == user.Id);
-            var weightEntries = _context.WeightEntries.Where(w => w.UserId == user.Id).OrderByDescending(w => w.Date).ToList();
+            var weightEntries = _context.WeightEntries.Where(w => w.UserId == user.Id).OrderBy(w => w.Date).ToList();
 
             var model = new ProfilePageViewModel
             {
@@ -186,6 +186,156 @@ namespace AlphaWorkout.Controllers
                 }
             }
             return RedirectToAction("ProfilePage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSteps(int steps, int stepsGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var stepsEntry = new Steps
+            {
+                UserId = user.Id,
+                StepCount = steps,
+                DailyGoal = stepsGoal,
+                Date = DateTime.Now
+            };
+
+            _context.Steps.Add(stepsEntry);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Steps added: {steps}, Goal: {stepsGoal}");
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddWaterIntake(double waterIntake, double waterGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var waterEntry = new WaterIntake
+            {
+                UserId = user.Id,
+                Liters = waterIntake,
+                DailyGoal = waterGoal,
+                Date = DateTime.Now
+            };
+
+            _context.WaterIntakes.Add(waterEntry);
+            await _context.SaveChangesAsync();
+
+            _logger.LogInformation($"Water intake added: {waterIntake}, Goal: {waterGoal}");
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCalorieIntake(int calories, int calorieGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var calorieEntry = new CalorieIntake
+            {
+                UserId = user.Id,
+                Calories = calories,
+                DailyGoal = calorieGoal,
+                Date = DateTime.Now
+            };
+
+            _context.CalorieIntakes.Add(calorieEntry);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddRunningDistance(double distance, double distanceGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var runningEntry = new RunningDistance
+            {
+                UserId = user.Id,
+                DistanceKm = distance,
+                DailyGoal = distanceGoal,
+                Date = DateTime.Now
+            };
+
+            _context.RunningDistances.Add(runningEntry);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddSleep(double sleep, double sleepGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var sleepEntry = new Sleep
+            {
+                UserId = user.Id,
+                Hours = sleep,
+                DailyGoal = sleepGoal,
+                Date = DateTime.Now
+            };
+
+            _context.Sleeps.Add(sleepEntry);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        public async Task<IActionResult> FitnessDashboard()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var model = new FitnessDashboardViewModel
+            {
+                Steps = _context.Steps.Where(s => s.UserId == user.Id).OrderBy(s => s.Date).ToList(),
+                WaterIntakes = _context.WaterIntakes.Where(w => w.UserId == user.Id).OrderBy(w => w.Date).ToList(),
+                CalorieIntakes = _context.CalorieIntakes.Where(c => c.UserId == user.Id).OrderBy(c => c.Date).ToList(),
+                RunningDistances = _context.RunningDistances.Where(r => r.UserId == user.Id).OrderBy(r => r.Date).ToList(),
+                Sleeps = _context.Sleeps.Where(s => s.UserId == user.Id).OrderBy(s => s.Date).ToList()
+            };
+
+            _logger.LogInformation($"Retrieved {model.Steps.Count} steps entries");
+            _logger.LogInformation($"Retrieved {model.WaterIntakes.Count} water entries");
+            _logger.LogInformation($"Retrieved {model.CalorieIntakes.Count} calorie entries");
+            _logger.LogInformation($"Retrieved {model.RunningDistances.Count} running entries");
+            _logger.LogInformation($"Retrieved {model.Sleeps.Count} sleep entries");
+
+            return View(model);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
