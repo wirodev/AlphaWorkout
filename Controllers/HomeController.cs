@@ -312,6 +312,148 @@ namespace AlphaWorkout.Controllers
             return RedirectToAction("ProfilePage");
         }
 
+
+        // Action method to set the target weight
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetTargetWeight(double targetWeight)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            // Save the target weight to the database or user settings
+            // Example logic for saving the goal:
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetWeight = targetWeight;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        // Action method to set the water intake goal
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetWaterGoal(double waterGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetWaterIntake = waterGoal;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        // Action method to set the sleep goal
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetSleepGoal(double sleepGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetSleep = sleepGoal;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        // Action method to set the steps goal
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetStepsGoal(int stepsGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetSteps = stepsGoal;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        // Action method to set the running distance goal
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetRunningGoal(double distanceGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetRunningDistance = distanceGoal;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+        // Action method to set the calorie goal
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetCalorieGoal(int calorieGoal)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+            if (userGoal == null)
+            {
+                userGoal = new UserGoal { UserId = user.Id };
+                _context.UserGoals.Add(userGoal);
+            }
+            userGoal.TargetCalorieIntake = calorieGoal;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ProfilePage");
+        }
+
+
         public async Task<IActionResult> FitnessDashboard()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -320,23 +462,56 @@ namespace AlphaWorkout.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
+
             var model = new FitnessDashboardViewModel
             {
+                ProfilePicturePath = user.ProfilePicturePath,
+                Username = user.UserName,
+
+                // get and set target goals
+                TargetWeight = userGoal?.TargetWeight,
+                TargetWaterIntake = userGoal?.TargetWaterIntake,
+                TargetSteps = userGoal?.TargetSteps,
+                TargetCalorieIntake = userGoal?.TargetCalorieIntake,
+                TargetRunningDistance = userGoal?.TargetRunningDistance,
+                TargetSleep = userGoal?.TargetSleep,
+
+                // tracking entries
                 Steps = _context.Steps.Where(s => s.UserId == user.Id).OrderBy(s => s.Date).ToList(),
                 WaterIntakes = _context.WaterIntakes.Where(w => w.UserId == user.Id).OrderBy(w => w.Date).ToList(),
                 CalorieIntakes = _context.CalorieIntakes.Where(c => c.UserId == user.Id).OrderBy(c => c.Date).ToList(),
                 RunningDistances = _context.RunningDistances.Where(r => r.UserId == user.Id).OrderBy(r => r.Date).ToList(),
-                Sleeps = _context.Sleeps.Where(s => s.UserId == user.Id).OrderBy(s => s.Date).ToList()
+                Sleeps = _context.Sleeps.Where(s => s.UserId == user.Id).OrderBy(s => s.Date).ToList(),
+                WeightEntries = _context.WeightEntries.Where(w => w.UserId == user.Id).OrderBy(w => w.Date).ToList()
             };
-
-            _logger.LogInformation($"Retrieved {model.Steps.Count} steps entries");
-            _logger.LogInformation($"Retrieved {model.WaterIntakes.Count} water entries");
-            _logger.LogInformation($"Retrieved {model.CalorieIntakes.Count} calorie entries");
-            _logger.LogInformation($"Retrieved {model.RunningDistances.Count} running entries");
-            _logger.LogInformation($"Retrieved {model.Sleeps.Count} sleep entries");
 
             return View(model);
         }
+
+        // feedback form 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SubmitFeedback(FeedbackViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var feedback = new Feedback
+                {
+                    UserId = _userManager.GetUserId(User),
+                    Message = model.Message,
+                    SubmittedOn = DateTime.Now
+                };
+
+                _context.Feedbacks.Add(feedback);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("ProfilePage");
+            }
+
+            return View(model);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

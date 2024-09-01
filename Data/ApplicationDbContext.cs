@@ -19,6 +19,10 @@ namespace AlphaWorkout.Data
         public DbSet<CalorieIntake> CalorieIntakes { get; set; }
         public DbSet<RunningDistance> RunningDistances { get; set; }
         public DbSet<Sleep> Sleeps { get; set; }
+        public DbSet<UserGoal> UserGoals { get; set; }
+        public DbSet<Feedback> Feedbacks { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

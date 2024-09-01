@@ -4,29 +4,187 @@
     ViewData["Title"] = "Profile Page";
 }
 
-<h1>@ViewData["Title"]</h1>
-<p>Welcome to your Profile Page, @Model.Username!</p>
+<div class="profile-header">
+    <!-- Display profile picture if it exists -->
+    @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+    {
+        <img src="@Model.ProfilePicturePath" alt="Profile Picture" />
+    }
+    <div>
+        <div class="welcome-text">Welcome, @Model.Username!</div>
+        <button class="edit-picture-btn" onclick="document.getElementById('ProfilePicture').click()">Edit Picture</button>
+        <form id="editPictureForm" asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data" style="display:none;">
+            <input type="file" id="ProfilePicture" name="ProfilePicture" onchange="document.getElementById('editPictureForm').submit();" />
+        </form>
+    </div>
+</div>
 
-<!-- Display profile picture if it exists -->
-@if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+<!-- Buttons -->
+<div class="button-group">
+    <a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
+    <form asp-action="GenerateWorkoutPlan" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
+    </form>
+</div>
+
+<!-- Display the workout plan -->
+@if (Model.WorkoutPlan != null && Model.WorkoutPlan.Any())
 {
-    <img src="@Model.ProfilePicturePath" alt="Profile Picture" style="width: 150px; height: 150px; border-radius: 50%;" />
+    <h2>Your Workout Plan</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Exercise</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var day in Model.WorkoutPlan)
+            {
+                <tr>
+                    <td>@day.Key</td>
+                    <td>@day.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
-<!-- Form to upload profile picture -->
-<h2>Upload Profile Picture</h2>
-<form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="ProfilePicture">Profile Picture:</label>
-        <input type="file" class="form-control" id="ProfilePicture" name="ProfilePicture" required />
+<!-- Track your habits -->
+<h2>Track Your Habits</h2>
+<div class="track-goals-section">
+    <!-- Weight Tracking -->
+    <div class="form-container">
+        <h3>Add weight in kg</h3>
+        <form asp-action="AddWeight" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="weight" name="weight" required placeholder="Enter weight..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
-</form>
 
-<!-- Add the Onboarding button -->
-<a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
+    <!-- Water Intake Tracking -->
+    <div class="form-container">
+        <h3>Today's Water Intake (L):</h3>
+        <form asp-action="AddWaterIntake" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="waterIntake" name="waterIntake" required placeholder="Enter water intake..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
 
-<!-- Display the onboarding data in a table -->
+    <!-- Sleep Tracking -->
+    <div class="form-container">
+        <h3>Sleep last night (h):</h3>
+        <form asp-action="AddSleep" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="sleep" name="sleep" required placeholder="Enter sleep hours..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <!-- Steps Tracking -->
+    <div class="form-container">
+        <h3>Steps Taken Today:</h3>
+        <form asp-action="AddSteps" method="post">
+            <div class="form-group">
+                <input type="number" class="form-control" id="steps" name="steps" required placeholder="Enter steps taken..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <!-- Running Distance Tracking -->
+    <div class="form-container">
+        <h3>Distance running today (km):</h3>
+        <form asp-action="AddRunningDistance" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="distance" name="distance" required placeholder="Enter distance..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <!-- Calorie Intake Tracking -->
+    <div class="form-container">
+        <h3>Calorie intake today (kcal):</h3>
+        <form asp-action="AddCalorieIntake" method="post">
+            <div class="form-group">
+                <input type="number" class="form-control" id="calories" name="calories" required placeholder="Enter calories..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>
+
+<!-- Set Your Goals -->
+<h2>Set Your Goals</h2>
+<div class="track-goals-section">
+    <div class="form-container">
+        <h3>Target Weight</h3>
+        <form asp-action="SetTargetWeight" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="targetWeight" name="targetWeight" required placeholder="Enter target weight..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h3>Daily Water Goal (Liters):</h3>
+        <form asp-action="SetWaterGoal" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="waterGoal" name="waterGoal" required placeholder="Enter water goal..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h3>Daily Sleep Goal (hours):</h3>
+        <form asp-action="SetSleepGoal" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="sleepGoal" name="sleepGoal" required placeholder="Enter sleep goal..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h3>Daily Step Goal:</h3>
+        <form asp-action="SetStepsGoal" method="post">
+            <div class="form-group">
+                <input type="number" class="form-control" id="stepsGoal" name="stepsGoal" required placeholder="Enter step goal..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h3>Daily Running Goal (km):</h3>
+        <form asp-action="SetRunningGoal" method="post">
+            <div class="form-group">
+                <input type="number" step="0.01" class="form-control" id="distanceGoal" name="distanceGoal" required placeholder="Enter running goal..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+
+    <div class="form-container">
+        <h3>Daily Calorie Goal (kcal):</h3>
+        <form asp-action="SetCalorieGoal" method="post">
+            <div class="form-group">
+                <input type="number" class="form-control" id="calorieGoal" name="calorieGoal" required placeholder="Enter calorie goal..." />
+            </div>
+            <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>
+
+<!-- Display the onboarding data -->
 @if (Model.FitnessGoals != null)
 {
     <h2>Your Onboarding Information</h2>
@@ -62,151 +220,5 @@
     </table>
 }
 
-<!-- Add weight entry form -->
-<h2>Track Your Weight</h2>
-<form asp-action="AddWeight" method="post">
-    <div class="form-group">
-        <label for="weight">Weight (kg):</label>
-        <input type="number" step="0.01" class="form-control" id="weight" name="weight" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Weight</button>
-</form>
+<a class="btn btn-secondary" asp-action="Feedback">Leave Feedback</a>
 
-<!-- Steps Tracking -->
-<h2>Track Your Steps</h2>
-<form asp-action="AddSteps" method="post">
-    <div class="form-group">
-        <label for="steps">Steps Taken Today:</label>
-        <input type="number" class="form-control" id="steps" name="steps" required />
-    </div>
-    <div class="form-group">
-        <label for="stepsGoal">Daily Step Goal:</label>
-        <input type="number" class="form-control" id="stepsGoal" name="stepsGoal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Steps</button>
-</form>
-
-<!-- Water Intake Tracking -->
-<h2>Track Your Water Intake</h2>
-<form asp-action="AddWaterIntake" method="post">
-    <div class="form-group">
-        <label for="waterIntake">Water Intake (Liters):</label>
-        <input type="number" step="0.01" class="form-control" id="waterIntake" name="waterIntake" required />
-    </div>
-    <div class="form-group">
-        <label for="waterGoal">Daily Water Goal (Liters):</label>
-        <input type="number" step="0.01" class="form-control" id="waterGoal" name="waterGoal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Water Intake</button>
-</form>
-
-<!-- Calorie Intake Tracking -->
-<h2>Track Your Calorie Intake</h2>
-<form asp-action="AddCalorieIntake" method="post">
-    <div class="form-group">
-        <label for="calories">Calorie Intake (kcal):</label>
-        <input type="number" class="form-control" id="calories" name="calories" required />
-    </div>
-    <div class="form-group">
-        <label for="calorieGoal">Daily Calorie Goal (kcal):</label>
-        <input type="number" class="form-control" id="calorieGoal" name="calorieGoal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Calorie Intake</button>
-</form>
-
-<!-- Running Distance Tracking -->
-<h2>Track Your Running Distance</h2>
-<form asp-action="AddRunningDistance" method="post">
-    <div class="form-group">
-        <label for="distance">Running Distance (km):</label>
-        <input type="number" step="0.01" class="form-control" id="distance" name="distance" required />
-    </div>
-    <div class="form-group">
-        <label for="distanceGoal">Daily Running Goal (km):</label>
-        <input type="number" step="0.01" class="form-control" id="distanceGoal" name="distanceGoal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Running Distance</button>
-</form>
-
-<!-- Sleep Tracking -->
-<h2>Track Your Sleep</h2>
-<form asp-action="AddSleep" method="post">
-    <div class="form-group">
-        <label for="sleep">Sleep (hours):</label>
-        <input type="number" step="0.01" class="form-control" id="sleep" name="sleep" required />
-    </div>
-    <div class="form-group">
-        <label for="sleepGoal">Daily Sleep Goal (hours):</label>
-        <input type="number" step="0.01" class="form-control" id="sleepGoal" name="sleepGoal" required />
-    </div>
-    <button type="submit" class="btn btn-primary">Add Sleep</button>
-</form>
-
-<!-- Display weight entries -->
-@if (Model.WeightEntries != null && Model.WeightEntries.Any())
-{
-    <h3>Your Weight Entries</h3>
-    <canvas id="weightChart" width="400" height="200"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var ctx = document.getElementById('weightChart').getContext('2d');
-
-        // Debugging: Log data to the console
-        var weightDates = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Date.ToString("MM/dd/yyyy")).ToList()));
-        var weightValues = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Weight).ToList()));
-
-        console.log("Weight Dates:", weightDates);
-        console.log("Weight Values:", weightValues);
-
-        var weightData = {
-            labels: weightDates,
-            datasets: [{
-                label: 'Weight (kg)',
-                data: weightValues,
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-        var weightChart = new Chart(ctx, {
-            type: 'line',
-            data: weightData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: false
-                    }
-                }
-            }
-        });
-    </script>
-}
-
-<!-- Button to generate workout plan -->
-<h2>Generate Workout Plan</h2>
-<form asp-action="GenerateWorkoutPlan" method="post">
-    <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
-</form>
-
-<!-- Display the workout plan -->
-@if (Model.WorkoutPlan != null && Model.WorkoutPlan.Any())
-{
-    <h3>Your Workout Plan</h3>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Day</th>
-                <th>Exercise</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var day in Model.WorkoutPlan)
-            {
-                <tr>
-                    <td>@day.Key</td>
-                    <td>@day.Value</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}

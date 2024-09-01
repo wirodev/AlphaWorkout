@@ -17,6 +17,314 @@ html {
   min-height: 100%;
 }
 
+.navbar {
+    background: linear-gradient(to right, #0D0E12, #2B2E36);
+    margin-bottom: 0;
+    padding-right: 30px;
+    padding-left: 30px;
+}
+
+.nav-link {
+    font-weight: bold;
+}
+
+    .nav-link:hover {
+        font-weight: bold;
+        color: #00FFFF !important;
+    }
+
+    .nav-link:active {
+        font-weight: bold;
+        color: #00FFFF !important;
+        text-decoration: underline !important;
+    }
+
+.navbar .navbar-nav .nav-link {
+    color: #FFF !important;
+    font-weight: bold;
+}
+
+    .navbar .navbar-nav .nav-link:hover {
+        color: #00FFFF !important;
+    }
+
+    .navbar .navbar-nav .nav-link.active {
+        color: #00FFFF !important;
+        text-decoration: underline !important;
+    }
+
+.home-background {
+    background-image: url('/images/background_image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: calc(100vh - 56px); /* Adjust this value if your navbar height changes */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+.overlay-text {
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 5px;
+}
+
+.container-footer {
+    padding: 30px;
+    background-color: #2B2E36;
+    color: darkgray !important;
+}
+
+.footer a {
+    text-decoration: none;
+    color: white;
+    position: absolute;
+}
+
+.container{
+    padding:30px;
+}
+
+
+/* Profile page */
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    margin-right: 20px;
+}
+
+.welcome-message {
+    flex-grow: 1;
+}
+
+.profile-actions {
+    margin-bottom: 30px;
+}
+
+.habit-tracking, .goal-setting {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+
+/* General Styles */
 body {
-  margin-bottom: 60px;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+h1, h2 {
+    color: #01A1D3;
+    font-weight: bold;
+}
+
+h2 {
+    border-bottom: 2px solid #01A1D3;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Profile Section */
+.profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+    .profile-header img {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+        margin-right: 20px;
+        border: 5px solid #01A1D3;
+    }
+
+    .profile-header .welcome-text {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .profile-header .edit-picture-btn {
+        display: inline-block;
+        margin-left: 20px;
+        font-size: 0.9rem;
+        color: #01A1D3;
+        background: none;
+        border: none;
+        text-decoration: underline;
+        cursor: pointer;
+        padding: 5px;
+    }
+
+        .profile-header .edit-picture-btn:hover {
+            color: #016d8e;
+        }
+
+/* Buttons */
+.btn-primary {
+    background-color: #01A1D3;
+    border-color: #01A1D3;
+    color: white;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-bottom: 20px;
+}
+
+    .btn-primary:hover {
+        background-color: #016d8e;
+        transform: scale(1.05);
+    }
+
+    .btn-primary:active {
+        background-color: #01546c;
+    }
+
+/* Forms */
+.form-group label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    border: 2px solid #01A1D3;
+    padding: 10px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+    .form-group input:focus {
+        border-color: #016d8e;
+        outline: none;
+    }
+
+/* Track your habits and goals */
+.track-goals-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+    .track-goals-section .form-container {
+        background-color: #fff;
+        border: 2px solid #01A1D3;
+        border-radius: 10px;
+        padding: 20px;
+        width: 30%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+        .track-goals-section .form-container h3 {
+            color: #01A1D3;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+
+/* Tables */
+.table {
+    background-color: #fff;
+    border: 2px solid #01A1D3;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+    .table th {
+        background-color: #01A1D3;
+        color: white;
+    }
+
+    .table td {
+        padding: 15px;
+    }
+
+/* Footer */
+footer {
+    background-color: #2B2E36;
+    color: #ddd;
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+    footer a {
+        color: #01A1D3;
+        text-decoration: none;
+    }
+
+.form-group {
+    margin-bottom: 5px;
+}
+
+
+.dashboard-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+    .dashboard-header img.profile-picture {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: block;
+        margin: 0 auto;
+    }
+
+.tracking-boxes {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.tracking-box {
+    background-color: #2B2E36;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    color: white;
+    width: 15%;
+}
+
+    .tracking-box h3 {
+        margin-bottom: 10px;
+        font-size: 1.25rem;
+    }
+
+    .tracking-box p {
+        font-size: 1.5rem;
+        margin: 0;
+        font-weight: bold;
+    }
+
+.graphs-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    margin-top: 30px;
+}
+
+.graph h3 {
+    text-align: center;
+    margin-bottom: 10px;
 }

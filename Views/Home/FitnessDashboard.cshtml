@@ -4,159 +4,246 @@
     ViewData["Title"] = "Fitness Dashboard";
 }
 
-<h1>@ViewData["Title"]</h1>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-@if (Model.Steps.Any())
-{
-    <!-- Steps Visualization -->
-    <h3>Steps</h3>
-    <canvas id="stepsChart" width="400" height="200"></canvas>
-    <script>
-        var ctxSteps = document.getElementById('stepsChart').getContext('2d');
-        var stepsData = {
-            labels: @Html.Raw(Json.Serialize(Model.Steps.Select(s => s.Date.ToString("MM/dd/yyyy")).ToList())),
-            datasets: [{
-                label: 'Steps Taken',
-                data: @Html.Raw(Json.Serialize(Model.Steps.Select(s => s.StepCount).ToList())),
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            }]
-        };
-        var stepsChart = new Chart(ctxSteps, {
-            type: 'line',
-            data: stepsData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-}
+<div class="dashboard-header">
+    <div class="profile-header">
+        @if (!string.IsNullOrEmpty(Model.ProfilePicturePath))
+        {
+            <img src="@Model.ProfilePicturePath" alt="Profile Picture" />
+        }
+        <div>
+            <div class="welcome-text">Check how you are doing, @Model.Username!</div>
+        </div>
+    </div>
+</div>
 
-@if (Model.WaterIntakes.Any())
-{
-    <!-- Water Intake Visualization -->
-    <h3>Water Intake</h3>
-    <canvas id="waterChart" width="400" height="200"></canvas>
-    <script>
-        var ctxWater = document.getElementById('waterChart').getContext('2d');
-        var waterData = {
-            labels: @Html.Raw(Json.Serialize(Model.WaterIntakes.Select(w => w.Date.ToString("MM/dd/yyyy")).ToList())),
-            datasets: [{
-                label: 'Water Intake (Liters)',
-                data: @Html.Raw(Json.Serialize(Model.WaterIntakes.Select(w => w.Liters).ToList())),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1
-            }]
-        };
-        var waterChart = new Chart(ctxWater, {
-            type: 'line',
-            data: waterData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-}
+<div class="tracking-boxes">
+    <div class="tracking-box">
+        <h3>Weight</h3>
+        <p>@(Model.WeightEntries.LastOrDefault()?.Weight.ToString("F2") ?? "0") / @(Model.TargetWeight?.ToString("F2") ?? "N/A")</p>
+    </div>
+    <div class="tracking-box">
+        <h3>Water Intake</h3>
+        <p>@(Model.WaterIntakes.LastOrDefault()?.Liters.ToString("F2") ?? "0") / @(Model.TargetWaterIntake?.ToString("F2") ?? "N/A")</p>
+    </div>
+    <div class="tracking-box">
+        <h3>Steps</h3>
+        <p>@(Model.Steps.LastOrDefault()?.StepCount.ToString() ?? "0") / @(Model.TargetSteps?.ToString() ?? "N/A")</p>
+    </div>
+    <div class="tracking-box">
+        <h3>Calories</h3>
+        <p>@(Model.CalorieIntakes.LastOrDefault()?.Calories.ToString() ?? "0") / @(Model.TargetCalorieIntake?.ToString() ?? "N/A")</p>
+    </div>
+    <div class="tracking-box">
+        <h3>Running Distance</h3>
+        <p>@(Model.RunningDistances.LastOrDefault()?.DistanceKm.ToString("F2") ?? "0") / @(Model.TargetRunningDistance?.ToString("F2") ?? "N/A")</p>
+    </div>
+    <div class="tracking-box">
+        <h3>Sleep</h3>
+        <p>@(Model.Sleeps.LastOrDefault()?.Hours.ToString("F2") ?? "0") / @(Model.TargetSleep?.ToString("F2") ?? "N/A")</p>
+    </div>
+</div>
 
-@if (Model.CalorieIntakes.Any())
-{
-    <!-- Calorie Intake Visualization -->
-    <h3>Calorie Intake</h3>
-    <canvas id="calorieChart" width="400" height="200"></canvas>
-    <script>
-        var ctxCalorie = document.getElementById('calorieChart').getContext('2d');
-        var calorieData = {
-            labels: @Html.Raw(Json.Serialize(Model.CalorieIntakes.Select(c => c.Date.ToString("MM/dd/yyyy")).ToList())),
-            datasets: [{
-                label: 'Calorie Intake (kcal)',
-                data: @Html.Raw(Json.Serialize(Model.CalorieIntakes.Select(c => c.Calories).ToList())),
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1
-            }]
-        };
-        var calorieChart = new Chart(ctxCalorie, {
-            type: 'line',
-            data: calorieData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-}
 
-@if (Model.RunningDistances.Any())
-{
-    <!-- Running Distance Visualization -->
-    <h3>Running Distance</h3>
-    <canvas id="runningChart" width="400" height="200"></canvas>
-    <script>
-        var ctxRunning = document.getElementById('runningChart').getContext('2d');
-        var runningData = {
-            labels: @Html.Raw(Json.Serialize(Model.RunningDistances.Select(r => r.Date.ToString("MM/dd/yyyy")).ToList())),
-            datasets: [{
-                label: 'Running Distance (km)',
-                data: @Html.Raw(Json.Serialize(Model.RunningDistances.Select(r => r.DistanceKm).ToList())),
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1
-            }]
-        };
-        var runningChart = new Chart(ctxRunning, {
-            type: 'line',
-            data: runningData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-    </script>
-}
+<div class="graphs-container">
+    <div class="graph">
+        @if (Model.WeightEntries != null && Model.WeightEntries.Any())
+        {
+            <h3>Your Weight Entries</h3>
+            <canvas id="weightChart" width="400" height="200"></canvas>
+            <script>
+                var ctx = document.getElementById('weightChart').getContext('2d');
 
-@if (Model.Sleeps.Any())
-{
-    <!-- Sleep Visualization -->
-    <h3>Sleep</h3>
-    <canvas id="sleepChart" width="400" height="200"></canvas>
-    <script>
-        var ctxSleep = document.getElementById('sleepChart').getContext('2d');
-        var sleepData = {
-            labels: @Html.Raw(Json.Serialize(Model.Sleeps.Select(s => s.Date.ToString("MM/dd/yyyy")).ToList())),
-            datasets: [{
-                label: 'Sleep (hours)',
-                data: @Html.Raw(Json.Serialize(Model.Sleeps.Select(s => s.Hours).ToList())),
-                backgroundColor: 'rgba(255, 159, 64, 0.2)',
-                borderColor: 'rgba(255, 159, 64, 1)',
-                borderWidth: 1
-            }]
-        };
-        var sleepChart = new Chart(ctxSleep, {
-            type: 'line',
-            data: sleepData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+                // debugging: log data to console
+                var weightDates = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Date.ToString("MM/dd/yyyy")).ToList()));
+                var weightValues = @Html.Raw(Json.Serialize(Model.WeightEntries.Select(w => w.Weight).ToList()));
+
+                console.log("Weight Dates:", weightDates);
+                console.log("Weight Values:", weightValues);
+
+                var weightData = {
+                    labels: weightDates,
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weightValues,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var weightChart = new Chart(ctx, {
+                    type: 'line',
+                    data: weightData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
                     }
-                }
-            }
-        });
-    </script>
-}
+                });
+            </script>
+        }
+    </div>
+
+    <div class="graph">
+        @if (Model.Steps.Any())
+        {
+            <h3>Steps</h3>
+            <canvas id="stepsChart" width="400" height="200"></canvas>
+            <script>
+                var ctxSteps = document.getElementById('stepsChart').getContext('2d');
+                var stepsData = {
+                    labels: @Html.Raw(Json.Serialize(Model.Steps.Select(s => s.Date.ToString("MM/dd/yyyy")).ToList())),
+                    datasets: [{
+                        label: 'Steps Taken',
+                        data: @Html.Raw(Json.Serialize(Model.Steps.Select(s => s.StepCount).ToList())),
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var stepsChart = new Chart(ctxSteps, {
+                    type: 'line',
+                    data: stepsData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+
+    <div class="graph">
+        @if (Model.WaterIntakes.Any())
+        {
+            <h3>Water Intake</h3>
+            <canvas id="waterChart" width="400" height="200"></canvas>
+            <script>
+                var ctxWater = document.getElementById('waterChart').getContext('2d');
+                var waterData = {
+                    labels: @Html.Raw(Json.Serialize(Model.WaterIntakes.Select(w => w.Date.ToString("MM/dd/yyyy")).ToList())),
+                    datasets: [{
+                        label: 'Water Intake (Liters)',
+                        data: @Html.Raw(Json.Serialize(Model.WaterIntakes.Select(w => w.Liters).ToList())),
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var waterChart = new Chart(ctxWater, {
+                    type: 'line',
+                    data: waterData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+
+    <div class="graph">
+        @if (Model.CalorieIntakes.Any())
+        {
+            <h3>Calorie Intake</h3>
+            <canvas id="calorieChart" width="400" height="200"></canvas>
+            <script>
+                var ctxCalorie = document.getElementById('calorieChart').getContext('2d');
+                var calorieData = {
+                    labels: @Html.Raw(Json.Serialize(Model.CalorieIntakes.Select(c => c.Date.ToString("MM/dd/yyyy")).ToList())),
+                    datasets: [{
+                        label: 'Calorie Intake (kcal)',
+                        data: @Html.Raw(Json.Serialize(Model.CalorieIntakes.Select(c => c.Calories).ToList())),
+                        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                        borderColor: 'rgba(255, 206, 86, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var calorieChart = new Chart(ctxCalorie, {
+                    type: 'line',
+                    data: calorieData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+
+    <div class="graph">
+        @if (Model.RunningDistances.Any())
+        {
+            <h3>Running Distance</h3>
+            <canvas id="runningChart" width="400" height="200"></canvas>
+            <script>
+                var ctxRunning = document.getElementById('runningChart').getContext('2d');
+                var runningData = {
+                    labels: @Html.Raw(Json.Serialize(Model.RunningDistances.Select(r => r.Date.ToString("MM/dd/yyyy")).ToList())),
+                    datasets: [{
+                        label: 'Running Distance (km)',
+                        data: @Html.Raw(Json.Serialize(Model.RunningDistances.Select(r => r.DistanceKm).ToList())),
+                        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var runningChart = new Chart(ctxRunning, {
+                    type: 'line',
+                    data: runningData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+
+    <div class="graph">
+        @if (Model.Sleeps.Any())
+        {
+            <h3>Sleep</h3>
+            <canvas id="sleepChart" width="400" height="200"></canvas>
+            <script>
+                var ctxSleep = document.getElementById('sleepChart').getContext('2d');
+                var sleepData = {
+                    labels: @Html.Raw(Json.Serialize(Model.Sleeps.Select(s => s.Date.ToString("MM/dd/yyyy")).ToList())),
+                    datasets: [{
+                        label: 'Sleep (hours)',
+                        data: @Html.Raw(Json.Serialize(Model.Sleeps.Select(s => s.Hours).ToList())),
+                        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1
+                    }]
+                };
+                var sleepChart = new Chart(ctxSleep, {
+                    type: 'line',
+                    data: sleepData,
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        }
+    </div>
+</div>

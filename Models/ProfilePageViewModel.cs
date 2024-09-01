@@ -5,6 +5,7 @@ namespace AlphaWorkout.Models
     public class ProfilePageViewModel
     {
         public string Username { get; set; }
+        public string NewUsername { get; set; }
         public string FitnessGoals { get; set; }
         public string Demographics { get; set; }
         public string FitnessLevel { get; set; }
@@ -21,5 +22,13 @@ namespace AlphaWorkout.Models
 
         // property for profile picture
         public string ProfilePicturePath { get; set; }
+
+        // properties to display the user's goals
+        public double? TargetWeight { get; set; }
+        public double? TargetWaterIntake { get; set; }
+        public int? TargetSteps { get; set; }
+        public double? TargetCalorieIntake { get; set; }
+        public double? TargetRunningDistance { get; set; }
+        public double? TargetSleep { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+﻿@model AlphaWorkout.Models.FeedbackViewModel
+
+@{
+    ViewData["Title"] = "Feedback";
+}
+
+<h1>Leave Feedback</h1>
+
+<form asp-action="SubmitFeedback" method="post">
+    <div class="form-group">
+        <label for="feedback">Your Feedback:</label>
+        <textarea class="form-control" id="feedback" name="Feedback" rows="5" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
