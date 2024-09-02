@@ -24,9 +24,12 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+var configuration = builder.Configuration;
+
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddSingleton<ChatGPTService>(new ChatGPTService("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")); // for chatgpt
+builder.Services.AddSingleton<ChatGPTService>(new ChatGPTService(configuration["OpenAI:ApiKey"]));
 
 var app = builder.Build();
 

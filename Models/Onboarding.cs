@@ -23,7 +23,6 @@ namespace AlphaWorkout.Models
 
         public string PastInjury { get; set; }
         //public string PastInjuryDetails { get; set; }
-        [Range(3, 5, ErrorMessage = "Preferred Split must be between 3 and 5.")]
        // public int PreferredSplit { get; set; }
         public string WorkoutPlan { get; set; }
     }
