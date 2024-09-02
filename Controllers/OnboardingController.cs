@@ -33,7 +33,7 @@ namespace AlphaWorkout.Controllers
                 onboarding = new Onboarding { UserId = user.Id };
             }
 
-            return View("Onboarding", onboarding); //  "Onboarding" view
+            return View("Onboarding", onboarding); 
         }
 
         // POST: Onboarding

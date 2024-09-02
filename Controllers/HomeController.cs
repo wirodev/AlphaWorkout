@@ -313,7 +313,6 @@ namespace AlphaWorkout.Controllers
         }
 
 
-        // Action method to set the target weight
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SetTargetWeight(double targetWeight)
@@ -324,8 +323,6 @@ namespace AlphaWorkout.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Save the target weight to the database or user settings
-            // Example logic for saving the goal:
             var userGoal = _context.UserGoals.FirstOrDefault(g => g.UserId == user.Id);
             if (userGoal == null)
             {
