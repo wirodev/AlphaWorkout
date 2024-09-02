@@ -1,5 +1,6 @@
 using AlphaWorkout.Data;
 using AlphaWorkout.Models;
+using AlphaWorkout.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,6 +25,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSingleton<ChatGPTService>(new ChatGPTService("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")); // for chatgpt
 
 var app = builder.Build();
 

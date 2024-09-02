@@ -5,7 +5,9 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphaWorkout", "AlphaWorkout.csproj", "{A0FF4CCA-6331-4457-A8C9-B853B29ED540}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaworkoutUnitTests", "..\AlphaworkoutUnitTests\AlphaworkoutUnitTests.csproj", "{3D034DBA-5838-40B3-86AB-CE12D3EF7AFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlphaworkoutUnitTests", "..\AlphaworkoutUnitTests\AlphaworkoutUnitTests.csproj", "{3D034DBA-5838-40B3-86AB-CE12D3EF7AFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenAITest", "..\OpenAITest\OpenAITest.csproj", "{329F9177-D3E2-4746-9258-8333620B63F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3D034DBA-5838-40B3-86AB-CE12D3EF7AFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D034DBA-5838-40B3-86AB-CE12D3EF7AFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D034DBA-5838-40B3-86AB-CE12D3EF7AFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{329F9177-D3E2-4746-9258-8333620B63F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{329F9177-D3E2-4746-9258-8333620B63F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{329F9177-D3E2-4746-9258-8333620B63F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{329F9177-D3E2-4746-9258-8333620B63F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

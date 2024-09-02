@@ -21,33 +21,29 @@
 
 <!-- Buttons -->
 <div class="button-group">
-    <a class="btn btn-primary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
+    <a class="btn btn-secondary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
     <form asp-action="GenerateWorkoutPlan" method="post" style="display:inline;">
         <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
+    </form>
+    <form asp-action="DeleteWorkoutPlan" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger">Delete Workout Plan</button>
     </form>
 </div>
 
 <!-- Display the workout plan -->
-@if (Model.WorkoutPlan != null && Model.WorkoutPlan.Any())
+<h2>Your Workout Plan</h2>
+@if (!string.IsNullOrEmpty(Model.WorkoutPlanText))
 {
-    <h2>Your Workout Plan</h2>
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Day</th>
-                <th>Exercise</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var day in Model.WorkoutPlan)
-            {
-                <tr>
-                    <td>@day.Key</td>
-                    <td>@day.Value</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <div class="workout-plan">
+        @foreach (var line in Model.WorkoutPlanText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
+        {
+            <p>@line</p>
+        }
+    </div>
+}
+else
+{
+    <p>No workout plan available. Please generate one.</p>
 }
 
 <!-- Track your habits -->
@@ -216,6 +212,11 @@
                 <td>Past Injury</td>
                 <td>@Model.PastInjury</td>
             </tr>
+            <tr>
+                <td>Preferred Split</td>
+                <td>@Model.PreferredSplit</td>
+            </tr>
+
         </tbody>
     </table>
 }

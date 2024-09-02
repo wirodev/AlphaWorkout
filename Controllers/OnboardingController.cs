@@ -4,6 +4,7 @@ using AlphaWorkout.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace AlphaWorkout.Controllers
 {
@@ -33,7 +34,7 @@ namespace AlphaWorkout.Controllers
                 onboarding = new Onboarding { UserId = user.Id };
             }
 
-            return View("Onboarding", onboarding); 
+            return View("Onboarding", onboarding);
         }
 
         // POST: Onboarding
@@ -41,6 +42,8 @@ namespace AlphaWorkout.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveOnboarding(Onboarding onboarding)
         {
+            ModelState.Remove("WorkoutPlan");
+
             if (ModelState.IsValid)
             {
                 var existingOnboarding = _context.Onboardings.FirstOrDefault(o => o.UserId == onboarding.UserId);
@@ -55,14 +58,18 @@ namespace AlphaWorkout.Controllers
                     existingOnboarding.FitnessLevel = onboarding.FitnessLevel;
                     existingOnboarding.ExercisePreferences = onboarding.ExercisePreferences;
                     existingOnboarding.PastInjury = onboarding.PastInjury;
+                    existingOnboarding.PreferredSplit = onboarding.PreferredSplit;
                     _context.Update(existingOnboarding);
                 }
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("ProfilePage", "Home");
             }
 
-            return View("Onboarding", onboarding); 
+            return View("Onboarding", onboarding);
         }
+
+
+
     }
 }

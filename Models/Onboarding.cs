@@ -22,5 +22,8 @@ namespace AlphaWorkout.Models
         public string ExercisePreferences { get; set; }
 
         public string PastInjury { get; set; }
+        //public string PastInjuryDetails { get; set; }
+        public int PreferredSplit { get; set; }
+        public string WorkoutPlan { get; set; }
     }
 }

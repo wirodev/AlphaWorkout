@@ -21,6 +21,7 @@ namespace AlphaWorkout.Data
         public DbSet<Sleep> Sleeps { get; set; }
         public DbSet<UserGoal> UserGoals { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<WorkoutPlan> WorkoutPlans { get; set; }
 
 
 

@@ -4,6 +4,7 @@ using AlphaWorkout.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AlphaWorkout.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240902124421_AddPastInjuryDetailsToOnboarding")]
+    partial class AddPastInjuryDetailsToOnboarding
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -204,6 +207,10 @@ namespace AlphaWorkout.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PastInjury")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PastInjuryDetails")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
