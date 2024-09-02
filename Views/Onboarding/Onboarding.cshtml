@@ -73,15 +73,15 @@
         <span asp-validation-for="PastInjury" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="PreferredSplit">Preferred Workout Split</label>
-        <select asp-for="PreferredSplit" class="form-control">
-            <option value="3">3-Day Split</option>
-            <option value="4">4-Day Split</option>
-            <option value="5">5-Day Split</option>
-        </select>
-        <span asp-validation-for="PreferredSplit" class="text-danger"></span>
-    </div>
+   @*   <div class="form-group">
+         <label asp-for="PreferredSplit">Preferred Workout Split</label>
+         <select asp-for="PreferredSplit" class="form-control">
+             <option value="3">3-Day Split</option>
+             <option value="4">4-Day Split</option>
+             <option value="5">5-Day Split</option>
+         </select>
+         <span asp-validation-for="PreferredSplit" class="text-danger"></span>
+     </div *@>
 
     <button type="submit" class="btn btn-primary">Submit</button>
     <span asp-validation-summary="All" class="text-danger"></span>

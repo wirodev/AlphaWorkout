@@ -21,23 +21,38 @@
 
 <!-- Buttons -->
 <div class="button-group">
-    <a class="btn btn-secondary" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
-    <form asp-action="GenerateWorkoutPlan" method="post" style="display:inline;">
-        <button type="submit" class="btn btn-primary">Generate Workout Plan</button>
+    <a class="btn btn-secondary align-center" asp-controller="Onboarding" asp-action="Index">Complete Onboarding</a>
+    <form asp-action="GenerateWorkoutPlan" method="post" class="form-inline">
+        <button type="submit" class="btn btn-primary align-center">Generate Workout Plan</button>
     </form>
-    <form asp-action="DeleteWorkoutPlan" method="post" style="display:inline;">
-        <button type="submit" class="btn btn-danger">Delete Workout Plan</button>
+    <form asp-action="DeleteWorkoutPlan" method="post" class="form-inline">
+        <button type="submit" class="btn btn-danger align-center">Delete Workout Plan</button>
     </form>
 </div>
+<br />
+<br />
+<br />
 
 <!-- Display the workout plan -->
 <h2>Your Workout Plan</h2>
 @if (!string.IsNullOrEmpty(Model.WorkoutPlanText))
 {
-    <div class="workout-plan">
-        @foreach (var line in Model.WorkoutPlanText.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.None))
+    <div class="workout-plan-box">
+        @foreach (var line in Model.WorkoutPlanText.Split('\n'))
         {
-            <p>@line</p>
+            if (line.StartsWith("Day"))
+            {
+                <div class="workout-day"><strong>@Html.Raw(line.Trim())</strong></div>
+            }
+            else
+            {
+                <div class="exercise-row">
+                    @foreach (var segment in line.Split('|'))
+                    {
+                        <div class="exercise-cell">@segment.Trim()</div>
+                    }
+                </div>
+            }
         }
     </div>
 }
@@ -45,7 +60,9 @@ else
 {
     <p>No workout plan available. Please generate one.</p>
 }
-
+<br />
+<br />
+<br />
 <!-- Track your habits -->
 <h2>Track Your Habits</h2>
 <div class="track-goals-section">
@@ -212,11 +229,6 @@ else
                 <td>Past Injury</td>
                 <td>@Model.PastInjury</td>
             </tr>
-            <tr>
-                <td>Preferred Split</td>
-                <td>@Model.PreferredSplit</td>
-            </tr>
-
         </tbody>
     </table>
 }

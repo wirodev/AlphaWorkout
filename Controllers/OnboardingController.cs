@@ -42,14 +42,23 @@ namespace AlphaWorkout.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SaveOnboarding(Onboarding onboarding)
         {
-            ModelState.Remove("WorkoutPlan");
+            ModelState.Remove("WorkoutPlan"); // exclude WorkoutPlan from validation
 
             if (ModelState.IsValid)
             {
-                var existingOnboarding = _context.Onboardings.FirstOrDefault(o => o.UserId == onboarding.UserId);
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var existingOnboarding = await _context.Onboardings
+                    .SingleOrDefaultAsync(o => o.UserId == user.Id);
+
                 if (existingOnboarding == null)
                 {
-                    _context.Add(onboarding);
+                    onboarding.UserId = user.Id;
+                    _context.Onboardings.Add(onboarding);
                 }
                 else
                 {
@@ -58,16 +67,26 @@ namespace AlphaWorkout.Controllers
                     existingOnboarding.FitnessLevel = onboarding.FitnessLevel;
                     existingOnboarding.ExercisePreferences = onboarding.ExercisePreferences;
                     existingOnboarding.PastInjury = onboarding.PastInjury;
-                    existingOnboarding.PreferredSplit = onboarding.PreferredSplit;
-                    _context.Update(existingOnboarding);
+                    //existingOnboarding.PreferredSplit = onboarding.PreferredSplit;
+
+                    _context.Entry(existingOnboarding).State = EntityState.Modified;
                 }
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction("ProfilePage", "Home");
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("ProfilePage", "Home");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error saving onboarding data: {ex.Message}");
+                    ModelState.AddModelError(string.Empty, "An error occurred while saving data.");
+                }
             }
 
             return View("Onboarding", onboarding);
         }
+
 
 
 

@@ -130,7 +130,7 @@ namespace AlphaWorkout.Controllers
                 onboarding.FitnessGoals,
                 onboarding.ExercisePreferences,
                 onboarding.PastInjury,
-                onboarding.PreferredSplit, // Pass the preferred split here
+               // onboarding.PreferredSplit, // Pass the preferred split here
                 onboarding.FitnessLevel
             );
 
@@ -173,7 +173,7 @@ namespace AlphaWorkout.Controllers
             var onboarding = _context.Onboardings.FirstOrDefault(o => o.UserId == user.Id);
             if (onboarding != null)
             {
-                onboarding.WorkoutPlan = null;
+                onboarding.WorkoutPlan = string.Empty;
                 _context.Update(onboarding);
                 await _context.SaveChangesAsync();
             }
